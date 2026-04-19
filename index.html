@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GroupClass V.2 bêta – Répartiteur de groupes</title>
+  <title>GroupClass v3.5 – Répartiteur de groupes</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
@@ -240,14 +240,12 @@
     .group { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; }
     .gh { background:var(--surface2); padding:11px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
     .gname { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; }
-    .gmeta { display:flex; gap:8px; align-items:center; }
-    .gsex  { font-size:0.88rem; font-weight:700; display:flex; gap:5px; align-items:center; }
-    .gsex .gsex-f { color:var(--girl); }
-    .gsex .gsex-m { color:var(--boy); }
+    .gmeta { display:flex; gap:7px; align-items:center; }
+    .gsex  { font-size:0.78rem; color:var(--muted); }
     .sum-badge {
       background:rgba(91,138,245,0.15); border:1px solid rgba(91,138,245,0.28);
       color:var(--accent); border-radius:7px; padding:3px 9px;
-      font-family:'Syne',sans-serif; font-weight:800; font-size:0.82rem;
+      font-family:'Syne',sans-serif; font-weight:800; font-size:0.78rem;
     }
     .gb { padding:4px 12px; }
     .sr {
@@ -381,6 +379,20 @@
       .export-cards { flex-direction:column; }
     }
 
+    /* ══ AIDE ══ */
+    .help-item {
+      display:flex; gap:12px; align-items:flex-start;
+      background:var(--surface2); border-radius:10px;
+      padding:11px 13px; margin-bottom:7px;
+      font-size:0.88rem; line-height:1.55; color:var(--muted);
+      border:1px solid var(--border);
+    }
+    .help-item strong { color:var(--text); }
+    .hi-icon {
+      font-size:1.1rem; flex-shrink:0; width:22px;
+      display:flex; align-items:flex-start; justify-content:center; margin-top:1px;
+    }
+
     @media print {
       body { background:white; color:black; }
       header,.steps,.btn-row,.actions,#warningBande { display:none !important; }
@@ -392,70 +404,44 @@
       .sr-prenom { color:black; font-size:1rem; }
       .sr-nom    { color:#555; }
       .sum-badge { background:#eef; border-color:#aac; color:#224; }
-      .gname { color:black; }
-      .gsex .gsex-f { color:#c0186e; }
-      .gsex .gsex-m { color:#1565c0; }
+      .gname,.gsex { color:black; }
       .sr.new-eleve { background:#f0fff4; }
       .info-box { display:none; }
     }
-
-    /* ══ AIDE ══ */
-    .help-tab {
-      padding:6px 12px; border-radius:8px; border:1px solid var(--border);
-      background:var(--surface2); color:var(--muted);
-      font-family:'Syne',sans-serif; font-weight:700; font-size:0.78rem;
-      cursor:pointer; transition:all 0.15s;
-    }
-    .help-tab.active { background:var(--accent); border-color:var(--accent); color:white; }
-    .help-tab:active { transform:scale(0.96); }
-
-    .help-panel { display:none; }
-    .help-panel.active { display:block; animation:fadeUp 0.18s ease; }
-
-    .help-section { display:flex; flex-direction:column; gap:8px; }
-    .help-item {
-      display:flex; gap:10px; align-items:flex-start;
-      font-size:0.88rem; line-height:1.55; color:var(--muted);
-      padding:8px 10px; border-radius:8px; background:var(--surface2);
-    }
-    .help-item span { flex:1; }
-    .help-item strong { color:var(--text); }
-    .help-item code {
-      font-family:monospace; font-size:0.82rem; font-weight:700;
-      background:var(--surface3); border:1px solid var(--border);
-      border-radius:4px; padding:1px 6px; color:var(--accent);
-    }
-    .help-cols { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:2px 0; }
-    .help-col {
-      font-size:0.82rem; padding:7px 10px; border-radius:7px;
-      background:var(--surface3); border:1px solid var(--border); color:var(--muted);
-    }
-    .help-col code { font-family:monospace; font-weight:700; color:var(--accent); font-size:0.85rem; display:block; margin-bottom:2px; }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">👥</div>
+  <div class="logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- haut-gauche (bleu) -->
+      <circle cx="8.5" cy="6.5" r="3.2" fill="#6eb3f7"/>
+      <path d="M3.5 13.5 Q8.5 11 13.5 13.5" stroke="#6eb3f7" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+      <!-- haut-droite (rose) -->
+      <circle cx="17.5" cy="6.5" r="3.2" fill="#f07ac0"/>
+      <path d="M12.5 13.5 Q17.5 11 22.5 13.5" stroke="#f07ac0" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+      <!-- bas-gauche (rose) — décalé -->
+      <circle cx="8.5" cy="17.5" r="3.2" fill="#f07ac0"/>
+      <path d="M3.5 24.5 Q8.5 22 13.5 24.5" stroke="#f07ac0" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+      <!-- bas-droite (bleu) -->
+      <circle cx="17.5" cy="17.5" r="3.2" fill="#6eb3f7"/>
+      <path d="M12.5 24.5 Q17.5 22 22.5 24.5" stroke="#6eb3f7" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
   <div>
-    <h1>GroupClass V.2 bêta</h1>
+    <h1>GroupClass</h1>
     <p>Répartiteur de groupes</p>
   </div>
   <div id="authorTag" style="margin-left:auto;font-size:0.72rem;font-weight:600;color:var(--accent);"></div>
-  <button id="btnHelp" title="Mode d'emploi" style="margin-left:8px;background:rgba(91,138,245,0.12);border:1px solid rgba(91,138,245,0.35);color:var(--accent);border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">&#10067;</button>
+  <button id="helpBtn" style="
+    width:38px;height:38px;border-radius:50%;border:2px solid rgba(240,122,192,0.6);
+    background:rgba(240,122,192,0.1);color:#f07ac0;font-family:'Syne',sans-serif;
+    font-weight:800;font-size:1.1rem;cursor:pointer;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;margin-left:8px;
+    transition:all 0.15s;
+  ">?</button>
 </header>
-
-<!-- ══ MODALE : Mode d'emploi ══ -->
-<div class="modal-overlay" id="modalHelp">
-  <div class="modal" style="max-width:540px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-      <div class="modal-title" style="margin-bottom:0;">&#10067; Mode d'emploi</div>
-      <button id="closeHelp" style="background:transparent;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:2px 6px;">&#x2715;</button>
-    </div>
-    <div id="helpTabs" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px;"></div>
-    <div id="helpPanels"></div>
-  </div>
-</div>
 
 <div class="container">
   <div class="steps" id="stepsBar">
@@ -484,6 +470,7 @@
       <ul>
         <li><strong>nom</strong> — le nom de famille</li>
         <li><strong>prenom</strong> — le prénom</li>
+        <li><strong>classe</strong> — la classe de l'élève <em>(optionnel)</em></li>
         <li><strong>sexe</strong> — <strong>F</strong> pour fille, <strong>M</strong> pour garçon</li>
         <li><strong>niveau</strong> — <strong>1</strong> (plus <strong>fort</strong>) à <strong>4</strong> (plus <strong>faible</strong>)</li>
       </ul>
@@ -531,8 +518,7 @@
       </div>
       <div class="sous-options" id="sousHetero">
         <button class="mode-btn sel" data-mode="mixte"><div class="mb-icon">⚤</div>Mixte</button>
-        <button class="mode-btn" data-mode="filles"><div class="mb-icon">♀</div>Filles</button>
-        <button class="mode-btn" data-mode="garcons"><div class="mb-icon">♂</div>Garçons</button>
+        <button class="mode-btn" data-mode="demixe"><div class="mb-icon">♀♂</div>Démixé</button>
       </div>
     </div>
 
@@ -547,17 +533,40 @@
       </div>
       <div class="sous-options" id="sousHomogene" style="display:none;">
         <button class="mode-btn sel" data-mode="niveaux_mixte"><div class="mb-icon">⚤</div>Mixte</button>
-        <button class="mode-btn" data-mode="niveaux_filles"><div class="mb-icon">♀</div>Filles</button>
-        <button class="mode-btn" data-mode="niveaux_garcons"><div class="mb-icon">♂</div>Garçons</button>
+        <button class="mode-btn" data-mode="niveaux_demixe"><div class="mb-icon">♀♂</div>Démixé</button>
       </div>
     </div>
 
-    <div class="config-card">
+    <!-- Stepper unique (modes mixte) -->
+    <div class="config-card" id="cardStepperUnique">
       <label>Nombre de groupes</label>
       <div class="nb-stepper">
         <button class="nb-btn" id="nbMinus">−</button>
         <div class="nb-val" id="nbVal">4</div>
         <button class="nb-btn" id="nbPlus">+</button>
+      </div>
+    </div>
+
+    <!-- Steppers Démixé (deux curseurs) -->
+    <div class="config-card" id="cardStepperDemixe" style="display:none;">
+      <label style="margin-bottom:10px;">Nombre de groupes par sexe</label>
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
+        <span style="font-size:1rem;color:var(--girl);min-width:24px;">♀</span>
+        <div class="nb-stepper" style="flex:1;">
+          <button class="nb-btn" id="nbMinusF">−</button>
+          <div class="nb-val" id="nbValF">2</div>
+          <button class="nb-btn" id="nbPlusF">+</button>
+        </div>
+        <span style="font-size:0.78rem;color:var(--muted);min-width:60px;" id="labelF">groupes</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <span style="font-size:1rem;color:var(--boy);min-width:24px;">♂</span>
+        <div class="nb-stepper" style="flex:1;">
+          <button class="nb-btn" id="nbMinusM">−</button>
+          <div class="nb-val" id="nbValM">2</div>
+          <button class="nb-btn" id="nbPlusM">+</button>
+        </div>
+        <span style="font-size:0.78rem;color:var(--muted);min-width:60px;" id="labelM">groupes</span>
       </div>
     </div>
     <div class="btn-row">
@@ -741,11 +750,23 @@
   </div>
 </div>
 
+<!-- ══ MODALE : Aide contextuelle (par écran) ══ -->
+<div class="modal-overlay" id="modalHelp">
+  <div class="modal" style="max-width:520px;padding:18px 16px 20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="modal-title" style="margin-bottom:0;" id="helpModalTitle">❓ Mode d'emploi</div>
+      <button id="closeHelp" style="background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;">✕</button>
+    </div>
+    <div style="border-top:1px solid var(--border);margin-bottom:14px;"></div>
+    <div id="helpBody"></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modalCouleur">
   <div class="modal">
     <div class="modal-title">🎨 Couleur du groupe</div>
     <div style="font-size:0.75rem;color:var(--muted);text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;">Palette</div>
-    <div id="couleurPicker" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:4px 0 12px;"></div>
+    <div id="couleurPicker" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:4px 0 12px;"></div>
     <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
       <div style="font-size:0.75rem;color:var(--muted);text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;">Couleur personnalisée</div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
@@ -769,6 +790,8 @@
   let modeActuel          = 'mixte';
   let modeActuelSauvegarde = null; // mode de la dernière séance sauvegardée
   let nbGroupes      = 4;
+  let nbGroupesF     = 2; // groupes filles en mode démixé
+  let nbGroupesM     = 2; // groupes garçons en mode démixé
   let undoStack      = [];
   let niveauSelEdit  = null;
   let niveauNouvel   = 1;
@@ -929,7 +952,7 @@
     });
     document.getElementById('stepsBar').style.display = '';
     // Réinitialiser le stepper à 2 à chaque ouverture de l'écran config
-    if(n===3) { nbGroupes = 2; updateNbVal(); }
+    if(n===3) { nbGroupes = 2; nbGroupesF = 2; nbGroupesM = 2; majSteppers(); }
     window.scrollTo(0,0);
   }
 
@@ -1156,7 +1179,7 @@
   // ══ SCREEN 3 : Config ═══════════════════════════════════════
   // Grande option active : 'hetero' ou 'homogene'
   let typeActuel = 'hetero';
-  // modeActuel reste la valeur finale : mixte / filles / garcons / niveaux_mixte / niveaux_filles / niveaux_garcons
+  // modeActuel : mixte / demixe / niveaux_mixte / niveaux_demixe
   modeActuel = 'mixte';
 
   // Sélection grande option
@@ -1175,15 +1198,16 @@
     });
   });
 
-  // Sélection sous-option (délégation sur chaque groupe)
+  // Sélection sous-option — met à jour modeActuel ET affiche le bon stepper
   document.querySelectorAll('.sous-options').forEach(container => {
     container.addEventListener('click', e => {
       const btn = e.target.closest('.mode-btn');
       if(!btn) return;
-      e.stopPropagation(); // ne pas déclencher le click de la type-card
+      e.stopPropagation();
       container.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('sel'));
       btn.classList.add('sel');
       modeActuel = btn.dataset.mode;
+      majSteppers();
     });
   });
 
@@ -1191,10 +1215,31 @@
   document.getElementById('cardHetero').classList.add('sel');
   document.getElementById('checkHetero').textContent = '✓';
 
-  function updateNbVal() {
-    const el = document.getElementById('nbVal');
-    el.textContent = nbGroupes;
+  function estDemixe() {
+    return modeActuel === 'demixe' || modeActuel === 'niveaux_demixe';
   }
+
+  function majSteppers() {
+    const demixe = estDemixe();
+    document.getElementById('cardStepperUnique').style.display = demixe ? 'none' : 'block';
+    document.getElementById('cardStepperDemixe').style.display = demixe ? 'block' : 'none';
+    if(demixe) {
+      // Afficher le nombre d'élèves par sexe comme indication
+      const presents = elevesRaw.filter(e=>!e.absent);
+      const nF = presents.filter(e=>e.sexe==='F').length;
+      const nM = presents.length - nF;
+      document.getElementById('labelF').textContent = `groupe${nbGroupesF>1?'s':''} (${nF} ♀)`;
+      document.getElementById('labelM').textContent = `groupe${nbGroupesM>1?'s':''} (${nM} ♂)`;
+    }
+    updateNbVal();
+  }
+
+  function updateNbVal() {
+    document.getElementById('nbVal').textContent  = nbGroupes;
+    document.getElementById('nbValF').textContent = nbGroupesF;
+    document.getElementById('nbValM').textContent = nbGroupesM;
+  }
+
   function addStepperListener(id, delta) {
     const btn = document.getElementById(id);
     btn.addEventListener('pointerdown', e => {
@@ -1203,7 +1248,23 @@
       const newVal = nbGroupes + delta;
       if(newVal >= 2 && newVal <= 20) { nbGroupes = newVal; updateNbVal(); }
     });
-    // Neutraliser tous les autres événements
+    ['click','touchstart','touchend','pointerup'].forEach(ev =>
+      btn.addEventListener(ev, e => { e.preventDefault(); e.stopImmediatePropagation(); },
+        ev.startsWith('touch') ? {passive:false} : undefined)
+    );
+  }
+  function addStepperListenerFM(id, sexe, delta) {
+    const btn = document.getElementById(id);
+    btn.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopImmediatePropagation();
+      if(sexe==='F') {
+        const v = nbGroupesF + delta;
+        if(v >= 1 && v <= 20) { nbGroupesF = v; majSteppers(); }
+      } else {
+        const v = nbGroupesM + delta;
+        if(v >= 1 && v <= 20) { nbGroupesM = v; majSteppers(); }
+      }
+    });
     ['click','touchstart','touchend','pointerup'].forEach(ev =>
       btn.addEventListener(ev, e => { e.preventDefault(); e.stopImmediatePropagation(); },
         ev.startsWith('touch') ? {passive:false} : undefined)
@@ -1211,6 +1272,11 @@
   }
   addStepperListener('nbMinus', -1);
   addStepperListener('nbPlus',  +1);
+  addStepperListenerFM('nbMinusF','F',-1);
+  addStepperListenerFM('nbPlusF', 'F',+1);
+  addStepperListenerFM('nbMinusM','M',-1);
+  addStepperListenerFM('nbPlusM', 'M',+1);
+
   document.getElementById('backBtn3').addEventListener('click',()=>goTo(2));
   document.getElementById('nextBtn3').addEventListener('click',()=>{ genererGroupes(); clearUndo(); goTo(4); });
 
@@ -1220,61 +1286,14 @@
     return arr;
   }
 
-  function genererGroupes() {
-    // Séance 1 : numLecon passe de 0 à 1
-    if(numLecon === 0 && !numLeconIncremente) { numLecon = 1; numLeconIncremente = true; }
-    // Nouvelle génération = nouvelles couleurs (sauf si on reprend une séance)
-    if(!etaitModeReprise) groupeCouleurs = {};
-    let pool = elevesRaw.filter(e=>!e.absent);
-    const estHomogene = modeActuel.startsWith('niveaux');
-    if(modeActuel==='filles' || modeActuel==='niveaux_filles')   pool = pool.filter(e=>e.sexe==='F');
-    if(modeActuel==='garcons' || modeActuel==='niveaux_garcons') pool = pool.filter(e=>e.sexe!=='F');
-
-    const N     = nbGroupes;
-    const total = pool.length;
-    if(total === 0) { groupes = []; afficherResultats(); afficherWarning(pool); goTo(4); return; }
-
-    // ── MODE NIVEAUX HOMOGÈNES ───────────────────────────────
-    if(estHomogene) {
-      // Principe : on forme N groupes, chacun reçoit une tranche de niveau.
-      // Étape 1 — trier tous les élèves par niveau croissant (N1=fort),
-      //           à niveau égal on mélange aléatoirement.
-      const sorted = pool.slice().sort((a,b) => {
-        if(a.niveau !== b.niveau) return a.niveau - b.niveau;
-        return Math.random() - 0.5;
-      });
-
-      // Étape 2 — répartir en N tranches de taille la plus égale possible.
-      // baseSize élèves par groupe, les premiers `resto` groupes ont 1 élève de plus.
-      const baseSize = Math.floor(total / N);
-      const resto    = total % N;
-      const gs = Array.from({length:N}, (_,i) => ({
-        nom:`Groupe ${i+1}`,
-        eleves:[],
-        taille: baseSize + (i < resto ? 1 : 0)
-      }));
-
-      // Étape 3 — remplir chaque groupe séquentiellement avec sa tranche.
-      let cursor = 0;
-      gs.forEach(g => {
-        g.eleves = sorted.slice(cursor, cursor + g.taille);
-        cursor += g.taille;
-      });
-
-      groupes = gs.filter(g=>g.eleves.length>0);
-      afficherResultats();
-      afficherWarning(pool);
-      return;
-    }
-
-    const baseSize = Math.floor(total / N);
-    const resto    = total % N;
-    const totF     = pool.filter(e=>e.sexe==='F').length;
-    const totM     = total - totF;
-    const baseF    = Math.floor(totF / N);
-    const baseM    = Math.floor(totM / N);
-    const restoF   = totF % N;
-    const restoM   = totM % N;
+  // Génère les groupes pour un pool donné avec N groupes (algo hétérogène mixte)
+  function genererPoolHetero(pool, N, nomPrefix, offsetIdx) {
+    const total  = pool.length;
+    const totF   = pool.filter(e=>e.sexe==='F').length;
+    const totM   = total - totF;
+    const baseSize = Math.floor(total/N), resto = total%N;
+    const baseF    = Math.floor(totF/N),  restoF = totF%N;
+    const baseM    = Math.floor(totM/N),  restoM = totM%N;
 
     const idxMel = shuffle([...Array(N).keys()]);
     const cibles = Array.from({length:N}, (_,i) => ({
@@ -1282,183 +1301,187 @@
       maxF: baseF   + (idxMel[i] < restoF ? 1 : 0),
       maxM: baseM   + (idxMel[i] < restoM ? 1 : 0),
     }));
-
     const gs = Array.from({length:N}, (_,i) => ({
-      nom: `Groupe ${i+1}`, eleves: [], sumNiv: 0, nbF: 0, nbM: 0,
-      hasN1: false, hasNMax: false
+      nom: `${nomPrefix}${offsetIdx+i+1}`, eleves:[], sumNiv:0, nbF:0, nbM:0,
+      hasN1:false, hasNMax:false
     }));
 
-    // byLevel dynamique selon niveauMax
     const byLevel = {};
-    for(let i=1; i<=niveauMax; i++) byLevel[i]=[];
-    pool.forEach(e => {
-      const lv = Math.min(Math.max(e.niveau,1),niveauMax);
-      byLevel[lv].push(e);
-    });
-    for(let i=1; i<=niveauMax; i++) shuffle(byLevel[i]);
+    for(let i=1;i<=niveauMax;i++) byLevel[i]=[];
+    pool.forEach(e => { const lv=Math.min(Math.max(e.niveau,1),niveauMax); byLevel[lv].push(e); });
+    for(let i=1;i<=niveauMax;i++) shuffle(byLevel[i]);
 
-    function assigner(g, e) {
-      g.eleves.push(e); g.sumNiv += e.niveau;
+    function assigner(g,e) {
+      g.eleves.push(e); g.sumNiv+=e.niveau;
       if(e.sexe==='F') g.nbF++; else g.nbM++;
       if(e.niveau===1) g.hasN1=true;
       if(e.niveau===niveauMax) g.hasNMax=true;
     }
 
-    // Passe 1A : un N1 (meilleur) par groupe
-    // Contrainte supplémentaire : pas deux garçons N1 dans le même groupe (si possible)
+    // Passe 1A : un N1 par groupe
     const nbGarconsN1 = byLevel[1].filter(e=>e.sexe!=='F').length;
-    const eviterDoubleGarconN1 = modeActuel==='mixte' && nbGarconsN1 <= N;
-
-    const ordreG = shuffle([...Array(N).keys()]).map(i => gs[i]);
+    const eviterDoubleGarconN1 = nbGarconsN1 <= N;
+    const ordreG = shuffle([...Array(N).keys()]).map(i=>gs[i]);
     const n1restants = [...byLevel[1]];
     ordreG.forEach(g => {
       if(!n1restants.length) return;
       const idx = n1restants.findIndex(e => {
-        const ci = gs.indexOf(g); const c = cibles[ci];
-        if(g.eleves.length >= c.size) return false;
-        if(modeActuel==='mixte' && e.sexe==='F' && g.nbF >= c.maxF) return false;
-        if(modeActuel==='mixte' && e.sexe!=='F' && g.nbM >= c.maxM) return false;
-        // Pas deux garçons N1 dans le même groupe
-        if(eviterDoubleGarconN1 && e.sexe!=='F' && g.eleves.some(x=>x.niveau===1 && x.sexe!=='F')) return false;
+        const ci=gs.indexOf(g); const c=cibles[ci];
+        if(g.eleves.length>=c.size) return false;
+        if(e.sexe==='F'&&g.nbF>=c.maxF) return false;
+        if(e.sexe!=='F'&&g.nbM>=c.maxM) return false;
+        if(eviterDoubleGarconN1&&e.sexe!=='F'&&g.eleves.some(x=>x.niveau===1&&x.sexe!=='F')) return false;
         return true;
       });
-      if(idx >= 0) { assigner(g, n1restants[idx]); n1restants.splice(idx,1); }
+      if(idx>=0) { assigner(g,n1restants[idx]); n1restants.splice(idx,1); }
     });
-    byLevel[1] = n1restants;
+    byLevel[1]=n1restants;
 
-    // Passe 1B : un N-max (plus faible) par groupe
-    const ordreG2 = shuffle([...Array(N).keys()]).map(i => gs[i]);
-    const nMaxRestants = [...byLevel[niveauMax]];
+    // Passe 1B : un N-max par groupe
+    const ordreG2=shuffle([...Array(N).keys()]).map(i=>gs[i]);
+    const nMaxRestants=[...byLevel[niveauMax]];
     ordreG2.forEach(g => {
       if(!nMaxRestants.length) return;
-      const idx = nMaxRestants.findIndex(e => {
-        const ci = gs.indexOf(g); const c = cibles[ci];
-        if(g.eleves.length >= c.size) return false;
-        if(modeActuel==='mixte' && e.sexe==='F' && g.nbF >= c.maxF) return false;
-        if(modeActuel==='mixte' && e.sexe!=='F' && g.nbM >= c.maxM) return false;
+      const idx=nMaxRestants.findIndex(e => {
+        const ci=gs.indexOf(g); const c=cibles[ci];
+        if(g.eleves.length>=c.size) return false;
+        if(e.sexe==='F'&&g.nbF>=c.maxF) return false;
+        if(e.sexe!=='F'&&g.nbM>=c.maxM) return false;
         return true;
       });
-      if(idx >= 0) { assigner(g, nMaxRestants[idx]); nMaxRestants.splice(idx,1); }
+      if(idx>=0) { assigner(g,nMaxRestants[idx]); nMaxRestants.splice(idx,1); }
     });
-    byLevel[niveauMax] = nMaxRestants;
+    byLevel[niveauMax]=nMaxRestants;
 
-    // Passe 2 : distribuer le reste (tous niveaux, du plus fort au plus faible)
-    const reste = [];
-    for(let i=1; i<=niveauMax; i++) reste.push(...byLevel[i]);
+    // Passe 2 : reste
+    const reste=[];
+    for(let i=1;i<=niveauMax;i++) reste.push(...byLevel[i]);
     reste.forEach(e => {
-      // Tentative 1 : toutes contraintes respectées
-      let meilleur = null, meilleurScore = Infinity;
-      gs.forEach((g,ci) => {
-        const c = cibles[ci];
-        if(g.eleves.length >= c.size) return;
-        if(modeActuel==='mixte' && e.sexe==='F' && g.nbF >= c.maxF) return;
-        if(modeActuel==='mixte' && e.sexe!=='F' && g.nbM >= c.maxM) return;
-        if(eviterDoubleGarconN1 && e.niveau===1 && e.sexe!=='F'
-           && g.eleves.some(x=>x.niveau===1 && x.sexe!=='F')) return;
-        const score = g.sumNiv * 100 + g.eleves.length;
-        if(score < meilleurScore) { meilleurScore = score; meilleur = g; }
-      });
-      // Tentative 2 : relâcher uniquement la contrainte garçons N1
-      if(!meilleur) {
+      let meilleur=null, meilleurScore=Infinity;
+      for(let t=1;t<=4;t++) {
         gs.forEach((g,ci) => {
-          const c = cibles[ci];
-          if(g.eleves.length >= c.size) return;
-          if(modeActuel==='mixte' && e.sexe==='F' && g.nbF >= c.maxF) return;
-          if(modeActuel==='mixte' && e.sexe!=='F' && g.nbM >= c.maxM) return;
-          const score = g.sumNiv * 100 + g.eleves.length;
-          if(score < meilleurScore) { meilleurScore = score; meilleur = g; }
+          const c=cibles[ci];
+          if(t<=3 && g.eleves.length>=c.size) return;
+          if(t<=2 && e.sexe==='F'&&g.nbF>=c.maxF) return;
+          if(t<=2 && e.sexe!=='F'&&g.nbM>=c.maxM) return;
+          if(t===3 && e.sexe==='F'&&g.nbF>=c.maxF+1) return;
+          if(t===3 && e.sexe!=='F'&&g.nbM>=c.maxM+1) return;
+          if(t<=1&&eviterDoubleGarconN1&&e.niveau===1&&e.sexe!=='F'&&g.eleves.some(x=>x.niveau===1&&x.sexe!=='F')) return;
+          const score=g.sumNiv*100+g.eleves.length;
+          if(score<meilleurScore){meilleurScore=score;meilleur=g;}
         });
+        if(meilleur) break;
       }
-      // Tentative 3 : relâcher contrainte sexe (max +1 toléré)
-      if(!meilleur) {
-        gs.forEach((g,ci) => {
-          const c = cibles[ci];
-          if(g.eleves.length >= c.size) return;
-          // Tolérer au max baseF+1 ou baseM+1 (jamais +2)
-          if(modeActuel==='mixte' && e.sexe==='F' && g.nbF >= c.maxF + 1) return;
-          if(modeActuel==='mixte' && e.sexe!=='F' && g.nbM >= c.maxM + 1) return;
-          const score = g.sumNiv * 100 + g.eleves.length;
-          if(score < meilleurScore) { meilleurScore = score; meilleur = g; }
-        });
-      }
-      // Tentative 4 : relâcher contrainte taille (dernier recours)
-      if(!meilleur) meilleur = gs.reduce((m,x) => x.eleves.length < m.eleves.length ? x : m);
-      assigner(meilleur, e);
+      if(!meilleur) meilleur=gs.reduce((m,x)=>x.eleves.length<m.eleves.length?x:m);
+      assigner(meilleur,e);
     });
 
-    // Passe 3 : optimisation par échanges (même sexe), en respectant la contrainte garçons N1
-    let amelioration = true, iterations = 0;
-    while(amelioration && iterations < 300) {
-      amelioration = false; iterations++;
-      for(let a=0; a<N; a++) {
-        for(let b=a+1; b<N; b++) {
-          const ga=gs[a], gb=gs[b];
-          for(let ia=0; ia<ga.eleves.length; ia++) {
-            for(let ib=0; ib<gb.eleves.length; ib++) {
-              const ea=ga.eleves[ia], eb=gb.eleves[ib];
-              if(modeActuel==='mixte' && ea.sexe!==eb.sexe) continue;
-              if(ea.niveau===eb.niveau) continue;
-              if(ea.niveau===1 && ga.eleves.filter(x=>x.niveau===1).length===1) continue;
-              if(ea.niveau===niveauMax && ga.eleves.filter(x=>x.niveau===niveauMax).length===1) continue;
-              if(eb.niveau===1 && gb.eleves.filter(x=>x.niveau===1).length===1) continue;
-              if(eb.niveau===niveauMax && gb.eleves.filter(x=>x.niveau===niveauMax).length===1) continue;
-              // Ne pas créer deux garçons N1 dans le même groupe
-              // Ne pas non plus retirer le seul garçon N1 d'un groupe qui doit en avoir un
-              if(eviterDoubleGarconN1) {
-                if(eb.niveau===1 && eb.sexe!=='F' && ga.eleves.some(x=>x!==ea && x.niveau===1 && x.sexe!=='F')) continue;
-                if(ea.niveau===1 && ea.sexe!=='F' && gb.eleves.some(x=>x!==eb && x.niveau===1 && x.sexe!=='F')) continue;
-                // Ne pas retirer le seul garçon N1 d'un groupe si ce groupe doit en avoir un
-                if(ea.niveau===1 && ea.sexe!=='F' && !ga.eleves.some(x=>x!==ea && x.niveau===1 && x.sexe!=='F')) continue;
-                if(eb.niveau===1 && eb.sexe!=='F' && !gb.eleves.some(x=>x!==eb && x.niveau===1 && x.sexe!=='F')) continue;
-              }
-              const newSumA = ga.sumNiv - ea.niveau + eb.niveau;
-              const newSumB = gb.sumNiv - eb.niveau + ea.niveau;
-              if(Math.abs(newSumA-newSumB) < Math.abs(ga.sumNiv-gb.sumNiv)) {
-                ga.eleves[ia]=eb; gb.eleves[ib]=ea;
-                ga.sumNiv=newSumA; gb.sumNiv=newSumB;
-                amelioration=true;
-              }
-            }
+    // Passe 3 : optimisation niveaux
+    let amelioration=true, iterations=0;
+    while(amelioration&&iterations<300) {
+      amelioration=false; iterations++;
+      for(let a=0;a<N;a++) for(let b=a+1;b<N;b++) {
+        const ga=gs[a],gb=gs[b];
+        for(let ia=0;ia<ga.eleves.length;ia++) for(let ib=0;ib<gb.eleves.length;ib++) {
+          const ea=ga.eleves[ia],eb=gb.eleves[ib];
+          if(ea.sexe!==eb.sexe) continue;
+          if(ea.niveau===eb.niveau) continue;
+          if(ea.niveau===1&&ga.eleves.filter(x=>x.niveau===1).length===1) continue;
+          if(ea.niveau===niveauMax&&ga.eleves.filter(x=>x.niveau===niveauMax).length===1) continue;
+          if(eb.niveau===1&&gb.eleves.filter(x=>x.niveau===1).length===1) continue;
+          if(eb.niveau===niveauMax&&gb.eleves.filter(x=>x.niveau===niveauMax).length===1) continue;
+          const newSumA=ga.sumNiv-ea.niveau+eb.niveau, newSumB=gb.sumNiv-eb.niveau+ea.niveau;
+          if(Math.abs(newSumA-newSumB)<Math.abs(ga.sumNiv-gb.sumNiv)) {
+            ga.eleves[ia]=eb; gb.eleves[ib]=ea;
+            ga.sumNiv=newSumA; gb.sumNiv=newSumB;
+            amelioration=true;
           }
         }
       }
     }
+    return gs.filter(g=>g.eleves.length>0);
+  }
 
-    // Passe 4 : rééquilibrage sexe — corriger les écarts > 1 par échanges de même niveau
-    if(modeActuel==='mixte') {
-      let echange = true;
-      let iter4 = 0;
-      while(echange && iter4 < 100) {
-        echange = false; iter4++;
-        for(let a=0; a<N; a++) {
-          for(let b=a+1; b<N; b++) {
-            const ga=gs[a], gb=gs[b];
-            // Chercher une fille dans ga et un garçon dans gb (ou vice versa)
-            // pour réduire l'écart nbF
-            for(let ia=0; ia<ga.eleves.length; ia++) {
-              for(let ib=0; ib<gb.eleves.length; ib++) {
-                const ea=ga.eleves[ia], eb=gb.eleves[ib];
-                if(ea.sexe === eb.sexe) continue;
-                if(ea.niveau !== eb.niveau) continue; // même niveau pour ne pas casser l'équilibre
-                // L'échange réduit-il l'écart de filles ?
-                const diffAvant = Math.abs(ga.nbF - gb.nbF);
-                const newNbFa = ga.nbF - (ea.sexe==='F'?1:0) + (eb.sexe==='F'?1:0);
-                const newNbFb = gb.nbF - (eb.sexe==='F'?1:0) + (ea.sexe==='F'?1:0);
-                const diffApres = Math.abs(newNbFa - newNbFb);
-                if(diffApres < diffAvant) {
-                  ga.eleves[ia]=eb; gb.eleves[ib]=ea;
-                  ga.nbF=newNbFa; ga.nbM=ga.eleves.length-newNbFa;
-                  gb.nbF=newNbFb; gb.nbM=gb.eleves.length-newNbFb;
-                  echange=true;
-                }
-              }
-            }
+  // Génère les groupes pour un pool donné avec N groupes (algo homogène)
+  function genererPoolHomogene(pool, N, nomPrefix, offsetIdx) {
+    const total=pool.length;
+    const sorted=pool.slice().sort((a,b)=>a.niveau!==b.niveau?a.niveau-b.niveau:Math.random()-0.5);
+    const baseSize=Math.floor(total/N), resto=total%N;
+    const gs=Array.from({length:N},(_,i)=>({
+      nom:`${nomPrefix}${offsetIdx+i+1}`,
+      eleves:[],taille:baseSize+(i<resto?1:0)
+    }));
+    let cursor=0;
+    gs.forEach(g=>{ g.eleves=sorted.slice(cursor,cursor+g.taille); cursor+=g.taille; });
+    return gs.filter(g=>g.eleves.length>0);
+  }
+
+  function genererGroupes() {
+    if(numLecon===0&&!numLeconIncremente){numLecon=1;numLeconIncremente=true;}
+    if(!etaitModeReprise) groupeCouleurs={};
+    const presents=elevesRaw.filter(e=>!e.absent);
+    const estHomogene=modeActuel.startsWith('niveaux');
+    const demixe=estDemixe();
+
+    if(demixe) {
+      // Mode démixé : générer filles puis garçons séparément
+      const poolF=presents.filter(e=>e.sexe==='F');
+      const poolM=presents.filter(e=>e.sexe!=='F');
+      const NF=nbGroupesF, NM=nbGroupesM;
+      let gsF=[], gsM=[];
+      if(poolF.length>0) gsF = estHomogene
+        ? genererPoolHomogene(poolF, Math.min(NF,poolF.length), 'Groupe ', 0)
+        : genererPoolHetero(poolF, Math.min(NF,poolF.length), 'Groupe ', 0);
+      if(poolM.length>0) gsM = estHomogene
+        ? genererPoolHomogene(poolM, Math.min(NM,poolM.length), 'Groupe ', gsF.length)
+        : genererPoolHetero(poolM, Math.min(NM,poolM.length), 'Groupe ', gsF.length);
+      // Marquer les groupes pour affichage séparé
+      gsF.forEach(g=>{ g.sexeGroupe='F'; g.sumNiv=g.eleves.reduce((s,e)=>s+e.niveau,0); g.nbF=g.eleves.filter(e=>e.sexe==='F').length; g.nbM=g.eleves.length-g.nbF; g.hasN1=g.eleves.some(e=>e.niveau===1); g.hasNMax=g.eleves.some(e=>e.niveau===niveauMax); });
+      gsM.forEach(g=>{ g.sexeGroupe='M'; g.sumNiv=g.eleves.reduce((s,e)=>s+e.niveau,0); g.nbF=g.eleves.filter(e=>e.sexe==='F').length; g.nbM=g.eleves.length-g.nbF; g.hasN1=g.eleves.some(e=>e.niveau===1); g.hasNMax=g.eleves.some(e=>e.niveau===niveauMax); });
+      groupes=[...gsF,...gsM];
+      afficherResultats();
+      afficherWarning(presents);
+      return;
+    }
+
+    // Modes mixte classiques
+    let pool=presents;
+    const N=nbGroupes;
+    const total=pool.length;
+    if(total===0){groupes=[];afficherResultats();afficherWarning(pool);goTo(4);return;}
+
+    if(estHomogene) {
+      groupes=genererPoolHomogene(pool,N,'Groupe ',0);
+      groupes.forEach(g=>{g.sumNiv=g.eleves.reduce((s,e)=>s+e.niveau,0);g.nbF=g.eleves.filter(e=>e.sexe==='F').length;g.nbM=g.eleves.length-g.nbF;g.hasN1=g.eleves.some(e=>e.niveau===1);g.hasNMax=g.eleves.some(e=>e.niveau===niveauMax);});
+      afficherResultats(); afficherWarning(pool); return;
+    }
+
+    groupes=genererPoolHetero(pool,N,'Groupe ',0);
+    groupes.forEach(g=>{g.sumNiv=g.eleves.reduce((s,e)=>s+e.niveau,0);g.nbF=g.eleves.filter(e=>e.sexe==='F').length;g.nbM=g.eleves.length-g.nbF;g.hasN1=g.eleves.some(e=>e.niveau===1);g.hasNMax=g.eleves.some(e=>e.niveau===niveauMax);});
+
+    // Passe 4 rééquilibrage sexe (mode mixte uniquement)
+    const N2=groupes.length;
+    let echange=true,iter4=0;
+    while(echange&&iter4<100){
+      echange=false;iter4++;
+      for(let a=0;a<N2;a++) for(let b=a+1;b<N2;b++){
+        const ga=groupes[a],gb=groupes[b];
+        for(let ia=0;ia<ga.eleves.length;ia++) for(let ib=0;ib<gb.eleves.length;ib++){
+          const ea=ga.eleves[ia],eb=gb.eleves[ib];
+          if(ea.sexe===eb.sexe) continue;
+          if(ea.niveau!==eb.niveau) continue;
+          const diffAvant=Math.abs(ga.nbF-gb.nbF);
+          const newNbFa=ga.nbF-(ea.sexe==='F'?1:0)+(eb.sexe==='F'?1:0);
+          const newNbFb=gb.nbF-(eb.sexe==='F'?1:0)+(ea.sexe==='F'?1:0);
+          if(Math.abs(newNbFa-newNbFb)<diffAvant){
+            ga.eleves[ia]=eb;gb.eleves[ib]=ea;
+            ga.nbF=newNbFa;ga.nbM=ga.eleves.length-newNbFa;
+            gb.nbF=newNbFb;gb.nbM=gb.eleves.length-newNbFb;
+            echange=true;
           }
         }
       }
     }
-
-    groupes = gs.filter(g => g.eleves.length > 0);
     afficherResultats();
     afficherWarning(pool);
   }
@@ -1468,8 +1491,10 @@
     const w = document.getElementById('warningBande');
     const msgs = [];
     const estHomogene = modeActuel.startsWith('niveaux');
-    if(pool.length < nbGroupes) msgs.push(`Seulement ${pool.length} élève(s) pour ${nbGroupes} groupes — certains groupes seront vides.`);
-    if(!estHomogene) {
+    const demixe = estDemixe();
+    const NTotal = demixe ? nbGroupesF + nbGroupesM : nbGroupes;
+    if(pool.length < NTotal) msgs.push(`Seulement ${pool.length} élève(s) pour ${NTotal} groupes — certains groupes seront vides.`);
+    if(!estHomogene && !demixe) {
       const n1 = pool.filter(e=>e.niveau===1).length;
       if(n1 < nbGroupes && n1 > 0) msgs.push(`Seulement ${n1} élève(s) N1 (fort) pour ${nbGroupes} groupes — certains groupes n'auront pas de N1.`);
       const nM = pool.filter(e=>e.niveau===niveauMax).length;
@@ -1498,17 +1523,14 @@
     document.getElementById('dateLabel').textContent = today;
     document.getElementById('classeLabel').textContent = nomClasse ? nomClasse + ' — ' : '';
     document.getElementById('leconLabel').textContent = `Leçon ${numLecon}`;
-    let presents=elevesRaw.filter(e=>!e.absent);
-    if(modeActuel==='filles'||modeActuel==='niveaux_filles')    presents=presents.filter(e=>e.sexe==='F');
-    if(modeActuel==='garcons'||modeActuel==='niveaux_garcons')  presents=presents.filter(e=>e.sexe!=='F');
+    const presents=elevesRaw.filter(e=>!e.absent);
     const nbAbs=elevesRaw.filter(e=>e.absent).length;
     document.getElementById('resultStats').textContent=
-      `${groupes.length} groupes · ${presents.length} élève(s)`+(nbAbs?` · ${nbAbs} absent(s)`:'');
+      `${groupes.filter(g=>!g.aPlacerGroupe).length} groupes · ${presents.length} élève(s)`+(nbAbs?` · ${nbAbs} absent(s)`:'');
 
     const container=document.getElementById('groupContainer');
     container.innerHTML='';
-    const estHomogene = modeActuel.startsWith('niveaux');
-    // Bandeau explicatif déplacement — tous les modes
+    // Bandeau explicatif déplacement
     let bandeauDeplacement = document.getElementById('bandeauDeplacement');
     if(!bandeauDeplacement) {
       bandeauDeplacement = document.createElement('div');
@@ -1519,10 +1541,34 @@
     bandeauDeplacement.style.display = 'block';
     bandeauDeplacement.innerHTML = '↔️ <strong style="color:var(--text)">Déplacer un élève</strong> — appuyez sur le bouton <span style="background:var(--surface3);border:1px solid var(--border);border-radius:5px;padding:1px 7px;font-size:0.8rem;color:var(--accent);font-weight:700;">↔</span> à droite de son nom pour le changer de groupe.';
 
-    groupes.forEach((groupe, groupeIdx)=>{
+    const demixe = estDemixe();
+    let separateurInsere = false;
+
+    groupes.forEach((groupe, groupeIdx) => {
+      // Séparateur visuel entre groupes filles et garçons en mode démixé
+      if(demixe && !separateurInsere && groupe.sexeGroupe === 'M') {
+        separateurInsere = true;
+        const sep = document.createElement('div');
+        sep.style.cssText = 'display:flex;align-items:center;gap:10px;margin:16px 0 8px;';
+        sep.innerHTML = `<span style="color:var(--boy);font-size:1rem;">♂</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;color:var(--boy);text-transform:uppercase;letter-spacing:0.08em;">Groupes Garçons</span>
+          <div style="flex:1;height:1px;background:rgba(110,179,247,0.25);"></div>`;
+        container.appendChild(sep);
+      }
+      // Titre groupes filles au début en mode démixé
+      if(demixe && groupeIdx === 0 && groupe.sexeGroupe === 'F') {
+        const sep = document.createElement('div');
+        sep.style.cssText = 'display:flex;align-items:center;gap:10px;margin:0 0 8px;';
+        sep.innerHTML = `<span style="color:var(--girl);font-size:1rem;">♀</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;color:var(--girl);text-transform:uppercase;letter-spacing:0.08em;">Groupes Filles</span>
+          <div style="flex:1;height:1px;background:rgba(240,122,192,0.25);"></div>`;
+        container.appendChild(sep);
+      }
+
       const nbF=groupe.eleves.filter(e=>e.sexe==='F').length;
       const nbM=groupe.eleves.length-nbF;
-      const sum=groupe.eleves.length>0 ? (groupe.eleves.reduce((s,e)=>s+e.niveau,0)/groupe.eleves.length).toFixed(1) : '—';
+      const sum=groupe.eleves.reduce((s,e)=>s+e.niveau,0);
+      const moy = groupe.eleves.length ? Math.round(sum/groupe.eleves.length*10)/10 : 0;
       const sorted=triGroupe(groupe.eleves);
       const div=document.createElement('div');
       div.className='group';
@@ -1536,8 +1582,8 @@
         <div class="gh">
           <span class="gname">${nomAvecCouleur(groupe, groupeIdx)}</span>
           <div class="gmeta">
-            <span class="gsex"><span class="gsex-f">♀${nbF}</span><span class="gsex-m">♂${nbM}</span></span>
-            ${groupe.aPlacerGroupe ? '' : `<span class="sum-badge">Moy: ${sum.toString().replace('.',',')}</span>`}
+            <span class="gsex">♀${nbF} ♂${nbM}</span>
+            <span class="sum-badge">Moy: ${moy}</span>
           </div>
         </div>
         <div class="gb">
@@ -1554,20 +1600,12 @@
             </div>`;
           }).join('')}
         </div>`;
-      // Listener couleur
       const badge = div.querySelector('.groupe-color-badge');
-      if(badge) {
-        badge.addEventListener('click', () => ouvrirModalCouleur(groupeIdx));
-      }
-      // Attacher les listeners sur les boutons déplacer
+      if(badge) badge.addEventListener('click', () => ouvrirModalCouleur(groupeIdx));
       div.querySelectorAll('.sr-move-btn').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          ouvrirDeplacer(
-            parseInt(btn.dataset.groupe),
-            btn.dataset.nom,
-            btn.dataset.prenom
-          );
+          ouvrirDeplacer(parseInt(btn.dataset.groupe), btn.dataset.nom, btn.dataset.prenom);
         });
       });
       container.appendChild(div);
@@ -1619,6 +1657,78 @@
   });
   document.getElementById('printBtn').addEventListener('click',()=>window.print());
 
+  // ══ AIDE CONTEXTUELLE ═══════════════════════════════════════
+  const HELP_CONTENT = {
+    screen0: {
+      titre: '💾 Reprise',
+      items: [
+        ['🔄', "L'application <strong>sauvegarde automatiquement</strong> après chaque répartition (stockage local du navigateur)."],
+        ['↩',  "Une invite propose de <strong>reprendre la séance précédente</strong> ou de charger un nouveau fichier."],
+        ['🔢', "Le <strong>numéro de leçon</strong> s'incrémente automatiquement à chaque reprise. Appuyez dessus pour le corriger."],
+        ['⚠️', "La sauvegarde est liée au <strong>navigateur et à l'appareil</strong> — elle ne se transfère pas sur un autre appareil."],
+        ['🗑️', "Charger un nouveau fichier <strong>efface</strong> la sauvegarde précédente."],
+      ]
+    },
+    screen1: {
+      titre: '📁 Fichier',
+      items: [
+        ['📁', "Appuyez sur la zone pointillée pour <strong>sélectionner votre fichier Excel</strong> (.xlsx ou .xls)."],
+        ['📋', "Colonnes attendues : <strong>nom, prénom, sexe</strong> (F/M), <strong>niveau</strong> (1 = plus fort). La colonne <strong>classe</strong> est optionnelle."],
+        ['📱', "Sur Android, rangez le fichier Excel <strong>hors du dossier Téléchargements</strong>."],
+        ['🔄', "Créez <strong>un fichier Excel par classe</strong>. Pour changer de classe, rechargez le fichier correspondant."],
+      ]
+    },
+    screen2: {
+      titre: '👥 Absents',
+      items: [
+        ['👆', "<strong>Appuyez sur un élève</strong> pour le marquer absent (fond rouge) ou présent."],
+        ['🔍', "Utilisez la <strong>barre de recherche</strong> pour trouver rapidement par nom ou prénom."],
+        ['📊', "Les compteurs <strong>Total / Présents / Absents</strong> se mettent à jour en temps réel."],
+        ['🔄', "Les absences sont <strong>mémorisées</strong> d'une séance à l'autre — pensez à vérifier la liste."],
+      ]
+    },
+    screen3: {
+      titre: '⚙️ Options',
+      items: [
+        ['⚖️', "<strong>Hétérogènes</strong> — les niveaux sont équilibrés entre les groupes."],
+        ['📶', "<strong>Homogènes</strong> — les élèves de même niveau sont regroupés ensemble."],
+        ['⚤',  "<strong>Mixte</strong> — filles et garçons mélangés. Un seul curseur pour le nombre de groupes."],
+        ['♀♂', "<strong>Démixé</strong> — groupes séparés par sexe. Deux curseurs indépendants : un pour les <strong>filles</strong>, un pour les <strong>garçons</strong>. Toute la classe est couverte en une seule répartition."],
+      ]
+    },
+    screen4: {
+      titre: '🎲 Résultats',
+      items: [
+        ['🎲', "<strong>Redistribuer</strong> — relance la répartition avec les mêmes réglages."],
+        ['↺',  "<strong>Annuler</strong> — revient à la répartition précédente (1 niveau d'historique)."],
+        ['✏️', "<strong>Niveau</strong> — modifie le niveau d'un élève ; la répartition est recalculée."],
+        ['🔔', "<strong>Retardataire</strong> — intègre un absent ou un nouvel élève. Mode <strong>Manuel</strong> (vous choisissez le groupe) ou <strong>Recalcul</strong> (redistribution complète)."],
+        ['↔',  "<strong>Déplacer</strong> — appuyez sur le bouton <span style='background:var(--surface3);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:0.8rem;color:var(--accent);font-weight:700;'>↔</span> à droite d'un élève pour le changer de groupe."],
+        ['🎨', "<strong>Couleur d'une équipe</strong> — appuyez sur la pastille de couleur pour en choisir une autre. Mémorisées pour les séances suivantes.", 'rgba(142,36,170,0.12)', 'rgba(142,36,170,0.3)'],
+        ['📊', "Chaque carte affiche : <strong>♀</strong> filles, <strong>♂</strong> garçons, et <strong>Moy:</strong> la moyenne des niveaux du groupe."],
+        ['💾', "<strong>Sauvegarder</strong> — exporte en page HTML imprimable ou en fichier Excel."],
+      ]
+    },
+  };
+
+  function ouvrirAide() {
+    const actif = SCREEN_IDS.find(id => document.getElementById(id).classList.contains('active')) || 'screen1';
+    const data = HELP_CONTENT[actif] || HELP_CONTENT['screen1'];
+    document.getElementById('helpModalTitle').textContent = '❓ ' + data.titre.replace(/^[^\s]+\s/, '');
+    const body = document.getElementById('helpBody');
+    body.innerHTML = data.items.map(([icon, texte, bg, border]) => {
+      const style = bg ? `background:${bg};border-color:${border||'transparent'};` : '';
+      return `<div class="help-item" style="${style}">
+        <span class="hi-icon">${icon}</span>
+        <div>${texte}</div>
+      </div>`;
+    }).join('');
+    openModal('modalHelp');
+  }
+
+  document.getElementById('helpBtn').addEventListener('click', ouvrirAide);
+  document.getElementById('closeHelp').addEventListener('click', () => closeModal('modalHelp'));
+
   // ══ MODALE : Déplacer un élève ═══════════════════════════════
   let deplaceSource = null; // { groupeIdx, nom, prenom }
   let deplaceDestIdx = 0;
@@ -1631,12 +1741,13 @@
     picker.innerHTML = '';
     groupes.forEach((g, i) => {
       if(i === groupeIdx) return; // ne pas proposer le groupe actuel
-      const sum = g.eleves.length>0 ? (g.eleves.reduce((s,e)=>s+e.niveau,0)/g.eleves.length).toFixed(1) : '—';
       const item = document.createElement('div');
       item.className = 'groupe-pick-item' + (i === deplaceDestIdx ? ' sel' : '');
       const c = g.aPlacerGroupe ? null : couleurPourGroupe(i);
       const badge = c ? `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c.bg};border:1px solid rgba(255,255,255,0.25);flex-shrink:0;margin-right:6px;vertical-align:middle;"></span>${c.label}` : g.nom;
-      item.innerHTML = `<span class="gp-name">${badge}</span><span class="gp-meta">${g.aPlacerGroupe ? '' : 'Moy: '+sum.toString().replace('.',',')+' · '}${g.eleves.length} élève(s)</span>`;
+      const sum = g.eleves.reduce((s,e)=>s+e.niveau,0);
+      const moy = g.eleves.length ? Math.round(sum/g.eleves.length*10)/10 : 0;
+      item.innerHTML = `<span class="gp-name">${badge}</span><span class="gp-meta">Moy: ${moy} · ${g.eleves.length} élève(s)</span>`;
       item.addEventListener('click', () => {
         picker.querySelectorAll('.groupe-pick-item').forEach(x=>x.classList.remove('sel'));
         item.classList.add('sel');
@@ -1801,12 +1912,12 @@
     groupes.forEach((g,i)=>{
       const nbF=g.eleves.filter(e=>e.sexe==='F').length;
       const nbM=g.eleves.length-nbF;
-      const sum=g.eleves.length>0 ? (g.eleves.reduce((s,e)=>s+e.niveau,0)/g.eleves.length).toFixed(1) : '—';
+      const sum=g.eleves.reduce((s,e)=>s+e.niveau,0);
       const item=document.createElement('div');
       item.className='groupe-pick-item'+(i===0?' sel':'');
       const c = g.aPlacerGroupe ? null : couleurPourGroupe(i);
       const badge = c ? `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c.bg};border:1px solid rgba(255,255,255,0.25);flex-shrink:0;margin-right:6px;vertical-align:middle;"></span>${c.label}` : g.nom;
-      item.innerHTML=`<span class="gp-name">${badge}</span><span class="gp-meta">♀${nbF} ♂${nbM}${g.aPlacerGroupe ? '' : ' · Moy: '+sum.toString().replace('.',',')}  · ${g.eleves.length} élève(s)</span>`;
+      item.innerHTML=`<span class="gp-name">${badge}</span><span class="gp-meta">♀${nbF} ♂${nbM} · Moy: ${g.eleves.length?Math.round(g.eleves.reduce((s,e)=>s+e.niveau,0)/g.eleves.length*10)/10:0} · ${g.eleves.length} élève(s)</span>`;
       item.addEventListener('click',()=>{
         document.querySelectorAll('.groupe-pick-item').forEach(x=>x.classList.remove('sel'));
         item.classList.add('sel'); groupeManuelIdx=i;
@@ -1892,30 +2003,30 @@
   });
 
   function exportHTML() {
-    let presents=elevesRaw.filter(e=>!e.absent);
-    if(modeActuel==='filles'||modeActuel==='niveaux_filles')   presents=presents.filter(e=>e.sexe==='F');
-    if(modeActuel==='garcons'||modeActuel==='niveaux_garcons') presents=presents.filter(e=>e.sexe!=='F');
+    const presents=elevesRaw.filter(e=>!e.absent);
     const titreGroupe = nomClasse ? `Leçon ${numLecon} — ${nomClasse} — ${today}` : `Leçon ${numLecon} — ${today}`;
     const nbAbs=elevesRaw.filter(e=>e.absent).length;
-    let html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${titreGroupe}</title><style>body{font-family:Arial,sans-serif;background:white;color:black;padding:20px;}h1{margin-bottom:4px;font-size:1.3rem;}p.sub{color:#666;margin-bottom:18px;font-size:0.82rem;}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}.group{border:1px solid #ddd;border-radius:8px;overflow:hidden;break-inside:avoid;}.gh{background:#f0f0f0;padding:9px 13px;display:flex;justify-content:space-between;align-items:center;}.gname{font-weight:bold;font-size:0.95rem;}.gmeta{display:flex;gap:8px;align-items:center;font-size:0.8rem;}.sum-badge{background:#e8eeff;border:1px solid #aac;border-radius:4px;padding:2px 8px;font-weight:700;color:#2244bb;font-size:0.75rem;}.gb{padding:6px 12px;}.sr{padding:6px 0;border-bottom:1px solid #f0f0f0;display:flex;gap:8px;align-items:center;}.sr:last-child{border:none;}.sr.new-eleve{background:#f0fff4;}.sr-prenom{font-size:1rem;font-weight:600;display:block;}.sr-nom{font-size:0.7rem;color:#888;text-transform:uppercase;display:block;}.sr-name{flex:1;line-height:1.2;}.sr-lv{border-radius:4px;padding:1px 6px;font-size:0.68rem;font-weight:700;background:#eee;}.f{color:#e91e8c;}.m{color:#1565c0;}@media print{.group{break-inside:avoid;}}</style></head><body><h1>${titreGroupe}</h1><p class="sub">${groupes.length} groupes · ${presents.length} élève(s)${nbAbs?' · '+nbAbs+' absent(s)':''}</p><div class="grid">`;
+    const avecClasse = elevesRaw.some(e=>e.classe);
+    let html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${titreGroupe}</title><style>body{font-family:Arial,sans-serif;background:white;color:black;padding:20px;}h1{margin-bottom:4px;font-size:1.3rem;}p.sub{color:#666;margin-bottom:18px;font-size:0.82rem;}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}.group{border:1px solid #ddd;border-radius:8px;overflow:hidden;break-inside:avoid;}.gh{background:#f0f0f0;padding:9px 13px;display:flex;justify-content:space-between;align-items:center;}.gname{font-weight:bold;font-size:0.95rem;}.gmeta{display:flex;gap:8px;align-items:center;font-size:0.8rem;}.sum-badge{background:#e8eeff;border:1px solid #aac;border-radius:4px;padding:2px 8px;font-weight:700;color:#2244bb;font-size:0.75rem;}.gb{padding:6px 12px;}.sr{padding:6px 0;border-bottom:1px solid #f0f0f0;display:flex;gap:8px;align-items:center;}.sr:last-child{border:none;}.sr.new-eleve{background:#f0fff4;}.sr-prenom{font-size:1rem;font-weight:600;display:block;}.sr-nom{font-size:0.7rem;color:#888;text-transform:uppercase;display:block;}.sr-classe{font-size:0.7rem;color:#aaa;display:block;font-style:italic;}.sr-name{flex:1;line-height:1.2;}.sr-lv{border-radius:4px;padding:1px 6px;font-size:0.68rem;font-weight:700;background:#eee;}.f{color:#e91e8c;}.m{color:#1565c0;}@media print{.group{break-inside:avoid;}}</style></head><body><h1>${titreGroupe}</h1><p class="sub">${groupes.length} groupes · ${presents.length} élève(s)${nbAbs?' · '+nbAbs+' absent(s)':''}</p><div class="grid">`;
     groupes.forEach((g, gi)=>{
       const nbF=g.eleves.filter(e=>e.sexe==='F').length,nbM=g.eleves.length-nbF;
-      const sum=g.eleves.length>0 ? (g.eleves.reduce((s,e)=>s+e.niveau,0)/g.eleves.length).toFixed(1) : '—';
+      const sum=g.eleves.reduce((s,e)=>s+e.niveau,0);
       const c = g.aPlacerGroupe ? null : couleurPourGroupe(gi);
       const borderColor = c ? c.bg : '#ddd';
       const headerBg = c ? c.bg : '#f0f0f0';
       const headerFg = c ? c.fg : '#000';
-      html+=`<div class="group" style="border-color:${borderColor}"><div class="gh" style="background:${headerBg};color:${headerFg}"><span class="gname">${nomAffichageGroupe(g,gi)}</span><div class="gmeta"><span>♀${nbF} ♂${nbM}</span>${g.aPlacerGroupe ? '' : '<span class="sum-badge">Moy: '+sum.toString().replace('.',',')+'</span>'}</div></div><div class="gb">`;
+      const moy2 = g.eleves.length ? Math.round(sum/g.eleves.length*10)/10 : 0;
+      html+=`<div class="group" style="border-color:${borderColor}"><div class="gh" style="background:${headerBg};color:${headerFg}"><span class="gname">${nomAffichageGroupe(g,gi)}</span><div class="gmeta"><span>♀${nbF} ♂${nbM}</span><span class="sum-badge">Moy: ${moy2}</span></div></div><div class="gb">`;
       triGroupe(g.eleves).forEach(e=>{
-        html+=`<div class="sr${e.nouveau?' new-eleve':''}"><span class="${e.sexe==='F'?'f':'m'}">${e.sexe==='F'?'♀':'♂'}</span><span class="sr-name"><span class="sr-prenom">${e.prenom}</span><span class="sr-nom">${e.nom}</span></span><span class="sr-lv">N${e.niveau}</span></div>`;
+        html+=`<div class="sr${e.nouveau?' new-eleve':''}"><span class="${e.sexe==='F'?'f':'m'}">${e.sexe==='F'?'♀':'♂'}</span><span class="sr-name"><span class="sr-prenom">${e.prenom}</span><span class="sr-nom">${e.nom}${avecClasse&&e.classe?' <span style="font-weight:normal;color:#aaa;">'+e.classe+'</span>':''}</span></span><span class="sr-lv">N${e.niveau}</span></div>`;
       });
       html+=`</div></div>`;
     });
     html+=`</div></body></html>`;
     const a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
-    const suffixe = nomClasse ? `${nomClasse}_${today.replace(/\//g,'-')}` : today.replace(/\//g,'-');
-    a.download=`groupes_${suffixe}.html`;
+    const classesStr = nomClasse ? nomClasse.replace(/\//g,'-').replace(/\s+/g,'') : 'classe';
+    a.download=`Groupes_${classesStr}_${today.replace(/\//g,'-')}.html`;
     a.click();
   }
 
@@ -1990,11 +2101,10 @@
       const sorted=triGroupe(g.eleves);
       const nbF=g.eleves.filter(e=>e.sexe==='F').length,nbM=g.eleves.length-nbF;
       const sum=g.eleves.reduce((s,e)=>s+e.niveau,0);
-      const moy=g.eleves.length ? (sum/g.eleves.length).toFixed(1) : '—';
       const nomG = nomAffichageGroupe(g, gi);
       const sd=[];
       sd.push([sc(`${nomG}  —  ${nomClasse ? nomClasse+' — ' : ''}${today}`,{bold:true,sz:12,bg:C.groupBg,fg:C.groupFg})]);
-      sd.push([sc(`${g.eleves.length} élève(s)   ♀ ${nbF}   ♂ ${nbM}   Niveau moy. : ${moy.toString().replace('.',',')}`,{sz:9,bg:'dde8ff',fg:C.headerBg})]);
+      sd.push([sc(`${g.eleves.length} élève(s)   ♀ ${nbF}   ♂ ${nbM}   Moy niveaux : ${g.eleves.length?Math.round(sum/g.eleves.length*10)/10:0}${avecClasse ? '   Classes : '+[...new Set(g.eleves.map(e=>e.classe).filter(Boolean))].join(', ') : ''}`,{sz:9,bg:'dde8ff',fg:C.headerBg})]);
       sd.push([]);
       const nbCols = avecClasse ? 7 : 6;
       sd.push([sc('#',{bold:true,bg:C.headerBg,fg:C.headerFg,align:'center'}),sc('Prénom',{bold:true,bg:C.headerBg,fg:C.headerFg}),sc('Nom',{bold:true,bg:C.headerBg,fg:C.headerFg}),...(avecClasse?[sc('Classe',{bold:true,bg:C.headerBg,fg:C.headerFg,align:'center'})]:[]),sc('Sexe',{bold:true,bg:C.headerBg,fg:C.headerFg,align:'center'}),sc('Niveau',{bold:true,bg:C.headerBg,fg:C.headerFg,align:'center'}),sc('Présent',{bold:true,bg:C.headerBg,fg:C.headerFg,align:'center'})]);
@@ -2009,8 +2119,8 @@
       XLSX.utils.book_append_sheet(wb,ws,nomG.substring(0,31));
     });
 
-    const suffixeXlsx = nomClasse ? `${nomClasse}_${today.replace(/\//g,'-')}` : today.replace(/\//g,'-');
-    XLSX.writeFile(wb,`groupes_${suffixeXlsx}.xlsx`);
+    const classesStrXlsx = nomClasse ? nomClasse.replace(/\//g,'-').replace(/\s+/g,'') : 'classe';
+    XLSX.writeFile(wb,`Groupes_${classesStrXlsx}_${today.replace(/\//g,'-')}.xlsx`);
   }
 
   // ══ SAUVEGARDE LOCALE (localStorage) ════════════════════════
@@ -2023,13 +2133,15 @@
         groupesHistorique[`${e.nom}||${e.prenom}||${e.sexe}`.toLowerCase()] = g.nom;
       }));
       const payload = {
-        version:   'V.2 bêta',
+        version:   '2.0b',
         savedAt:   new Date().toISOString(),
         nomClasse,
         niveauMax,
         numLecon,
         modeActuel,
         nbGroupes,
+        nbGroupesF,
+        nbGroupesM,
         elevesRaw: elevesRaw.map(e=>({...e})),
         groupes:   groupes.filter(g=>!g.aPlacerGroupe).map(g=>({
           nom:       g.nom,
@@ -2056,6 +2168,8 @@
       modeActuel = d.modeActuel || 'mixte';
       modeActuelSauvegarde = modeActuel;
       nbGroupes  = d.nbGroupes  || 4;
+      nbGroupesF = d.nbGroupesF || 2;
+      nbGroupesM = d.nbGroupesM || 2;
       elevesRaw  = d.elevesRaw.map(e=>({...e}));  // état réel conservé
 
       // Numéro de leçon : restaurer le dernier numéro sauvegardé
@@ -2136,8 +2250,10 @@
   }
 
   function labelMode(m) {
-    const map = {mixte:'Hétérogène mixte',filles:'Hétérogène filles',garcons:'Hétérogène garçons',
-                 niveaux_mixte:'Homogène mixte',niveaux_filles:'Homogène filles',niveaux_garcons:'Homogène garçons'};
+    const map = {
+      mixte:'Hétérogène mixte', demixe:'Hétérogène démixé',
+      niveaux_mixte:'Homogène mixte', niveaux_demixe:'Homogène démixé'
+    };
     return map[m]||m;
   }
 
@@ -2181,7 +2297,7 @@
     PALETTE_CHASUBLES.forEach(c => {
       const btn = document.createElement('button');
       const isActive = c.id === activeId;
-      btn.style.cssText = `width:100%;aspect-ratio:1;border-radius:50%;background:${c.bg};
+      btn.style.cssText = `width:44px;height:44px;border-radius:50%;background:${c.bg};
         border:3px solid ${isActive?'#fff':'transparent'};
         box-shadow:${isActive?'0 0 0 2px var(--accent)':'none'};
         cursor:pointer;transition:transform 0.1s;`;
@@ -2236,114 +2352,6 @@
   } else {
     chargerLS();
   }
-
-
-  // ══ AIDE ════════════════════════════════════════════════════
-  (function(){
-    const TABS = [
-      { label:'📂 Fichier',   icon:'📂' },
-      { label:'👥 Absents',   icon:'👥' },
-      { label:'⚙️ Options',   icon:'⚙️' },
-      { label:'🎲 Résultats', icon:'🎲' },
-      { label:'💾 Reprise',   icon:'💾' },
-    ];
-    const PANELS = [
-      // 0 — Fichier
-      `<div class="help-section">
-        <div class="help-item">📄 <span>Prépare un fichier <strong>.xlsx</strong> avec ces 4 colonnes :</span></div>
-        <div class="help-cols">
-          <div class="help-col"><code>nom</code>Nom de famille</div>
-          <div class="help-col"><code>prenom</code>Prénom</div>
-          <div class="help-col"><code>sexe</code><strong>F</strong> ou <strong>M</strong></div>
-          <div class="help-col"><code>niveau</code><strong>1</strong> (fort) → <strong>4</strong> (faible)</div>
-        </div>
-        <div class="help-item">📌 <span>La 1ʳᵉ ligne doit être la ligne d'en-tête (noms de colonnes).</span></div>
-        <div class="help-item">🏷️ <span>Une colonne <code>classe</code> optionnelle permet de gérer plusieurs classes dans un même fichier.</span></div>
-        <div class="help-item">📂 <span>Glisse le fichier sur la zone, ou appuie dessus pour le sélectionner.</span></div>
-      </div>`,
-      // 1 — Absents
-      `<div class="help-section">
-        <div class="help-item">👆 <span><strong>Appuie sur un élève</strong> pour le marquer absent (fond rouge) ou présent.</span></div>
-        <div class="help-item">🔍 <span>Utilise la <strong>barre de recherche</strong> pour trouver rapidement par nom ou prénom.</span></div>
-        <div class="help-item">📊 <span>Les compteurs Total / Présents / Absents se mettent à jour en temps réel.</span></div>
-        <div class="help-item">↩️ <span>Les absences sont <strong>mémorisées</strong> d'une séance à l'autre — pense à vérifier la liste.</span></div>
-      </div>`,
-      // 2 — Options
-      `<div class="help-section">
-        <div class="help-item">⚖️ <span><strong>Hétérogènes</strong> — niveaux équilibrés entre les groupes (usage général).</span></div>
-        <div class="help-item">📶 <span><strong>Homogènes</strong> — les meilleurs ensemble, puis les suivants (utile pour différencier).</span></div>
-        <div class="help-item">⚤ <span><strong>Mixte / Filles / Garçons</strong> — indique si la répartition tient compte du sexe.</span></div>
-        <div class="help-item">🔢 <span>Règle le <strong>nombre de groupes</strong> avec les boutons + et −.</span></div>
-      </div>`,
-      // 3 — Résultats
-      `<div class="help-section">
-        <div class="help-item">🎲 <span><strong>Redistribuer</strong> — relance la répartition aléatoire avec les mêmes réglages.</span></div>
-        <div class="help-item">↺ <span><strong>Annuler</strong> — revient à la répartition précédente (1 niveau d'historique).</span></div>
-        <div class="help-item">✏️ <span><strong>Niveau</strong> — modifie le niveau d'un élève ; la répartition est recalculée automatiquement.</span></div>
-        <div class="help-item">🔔 <span><strong>Retardataire</strong> — intègre un absent ou un nouvel élève dans un groupe.</span></div>
-        <div class="help-item">↔️ <span><strong>Déplacer</strong> — appuie sur le bouton <code>↔</code> à droite d'un élève pour le changer de groupe.</span></div>
-        <div class="help-item" style="background:rgba(240,122,192,0.1);border:1px solid rgba(240,122,192,0.3);">🎨 <span><strong>Couleur d'une équipe</strong> — Cliquez sur la pastille de couleur de l'équipe pour en choisir une autre si vous le désirez. Elles seront mémorisées pour les fois suivantes.</span></div>
-        <div class="help-item">📊 <span>Chaque carte affiche : <strong style="color:var(--girl)">♀</strong> filles, <strong style="color:var(--boy)">♂</strong> garçons, et <strong style="color:var(--accent)">Moy:</strong> la moyenne des niveaux.</span></div>
-        <div class="help-item">💾 <span><strong>Sauvegarder</strong> — exporte un fichier Excel récapitulatif de la séance.</span></div>
-        <div class="help-item">🖨️ <span><strong>Imprimer</strong> — génère une page HTML propre, prête pour l'impression.</span></div>
-      </div>`,
-      // 4 — Reprise
-      `<div class="help-section">
-        <div class="help-item">🔄 <span>L'application <strong>sauvegarde automatiquement</strong> après chaque répartition (stockage local du navigateur).</span></div>
-        <div class="help-item">↩️ <span>Au prochain lancement, une invite propose de <strong>reprendre la séance précédente</strong> ou de charger un nouveau fichier.</span></div>
-        <div class="help-item">🔢 <span>Le <strong>numéro de leçon</strong> s'incrémente automatiquement à chaque reprise. Tu peux le corriger en appuyant dessus.</span></div>
-        <div class="help-item">⚠️ <span>La sauvegarde est liée au <strong>navigateur et à l'appareil</strong> — elle ne se transfère pas sur un autre appareil.</span></div>
-        <div class="help-item">🗑️ <span>Charger un nouveau fichier <strong>efface</strong> la sauvegarde précédente.</span></div>
-      </div>`,
-    ];
-
-    // Construire les onglets et panneaux
-    const tabContainer   = document.getElementById('helpTabs');
-    const panelContainer = document.getElementById('helpPanels');
-    TABS.forEach((t,i) => {
-      const btn = document.createElement('button');
-      btn.className = 'help-tab' + (i===0?' active':'');
-      btn.dataset.tab = i;
-      btn.textContent = t.label;
-      tabContainer.appendChild(btn);
-      const div = document.createElement('div');
-      div.className = 'help-panel' + (i===0?' active':'');
-      div.dataset.panel = i;
-      div.innerHTML = PANELS[i];
-      panelContainer.appendChild(div);
-    });
-
-    // Switcher d'onglets
-    tabContainer.addEventListener('click', e => {
-      const btn = e.target.closest('.help-tab');
-      if(!btn) return;
-      const idx = btn.dataset.tab;
-      document.querySelectorAll('.help-tab').forEach(b => b.classList.toggle('active', b.dataset.tab===idx));
-      document.querySelectorAll('.help-panel').forEach(p => p.classList.toggle('active', p.dataset.panel===idx));
-    });
-
-    // Ouvrir la modale sur le bon onglet selon l'écran actif
-    function ouvrirAide() {
-      const screenMap = {screen1:'0', screen2:'1', screen3:'2', screen4:'3', screen0:'4'};
-      let tabIdx = '0';
-      for(const [sid, tidx] of Object.entries(screenMap)) {
-        const el = document.getElementById(sid);
-        if(el && el.classList.contains('active')) { tabIdx = tidx; break; }
-      }
-      document.querySelectorAll('.help-tab').forEach(b => b.classList.toggle('active', b.dataset.tab===tabIdx));
-      document.querySelectorAll('.help-panel').forEach(p => p.classList.toggle('active', p.dataset.panel===tabIdx));
-      openModal('modalHelp');
-    }
-
-    document.getElementById('btnHelp').addEventListener('click', ouvrirAide);
-    document.getElementById('closeHelp').addEventListener('click', () => closeModal('modalHelp'));
-    document.getElementById('modalHelp').addEventListener('click', e => {
-      if(e.target === document.getElementById('modalHelp')) closeModal('modalHelp');
-    });
-    document.addEventListener('keydown', e => {
-      if(e.key==='Escape') closeModal('modalHelp');
-    });
-  })();
 
   // ══ AUTEUR ══════════════════════════════════════════════════
   (function(){const a=[169,32,201,114,105,99,32,80,79,73,78,83,79,84];document.getElementById('authorTag').textContent=a.map(c=>String.fromCharCode(c)).join('');})();
