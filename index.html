@@ -35,22 +35,25 @@
 
     /* ══ HEADER ══ */
     header {
-      background: linear-gradient(135deg,#171a26,#111420);
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 14px 18px; position: sticky; top:0; z-index:100;
+      padding: 13px 18px; position: sticky; top:0; z-index:100;
       display: flex; align-items: center; gap: 12px;
     }
     .logo {
-      width:42px; height:42px; border-radius:10px; flex-shrink:0;
-      background: linear-gradient(135deg,var(--accent),var(--girl));
-      display:flex; align-items:center; justify-content:center; font-size:1.2rem;
+      width:40px; height:40px; border-radius:10px; flex-shrink:0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .header-titles {
+      flex:1; text-align:center;
     }
     header h1 {
-      font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem; letter-spacing:-0.5px;
-      background: linear-gradient(90deg,var(--accent),var(--girl));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; letter-spacing:-0.3px;
+      color: var(--text);
     }
-    header p { color:var(--muted); font-size:0.78rem; margin-top:1px; }
+    header p { color:var(--muted); font-size:0.74rem; margin-top:1px; letter-spacing:0.02em; }
 
     .container { padding:14px 14px; max-width:600px; margin:0 auto; }
 
@@ -414,30 +417,26 @@
 
 <header>
   <div class="logo">
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- haut-gauche (bleu) -->
-      <circle cx="8.5" cy="6.5" r="3.2" fill="#6eb3f7"/>
-      <path d="M3.5 13.5 Q8.5 11 13.5 13.5" stroke="#6eb3f7" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <!-- haut-droite (rose) -->
-      <circle cx="17.5" cy="6.5" r="3.2" fill="#f07ac0"/>
-      <path d="M12.5 13.5 Q17.5 11 22.5 13.5" stroke="#f07ac0" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <!-- bas-gauche (rose) — décalé -->
-      <circle cx="8.5" cy="17.5" r="3.2" fill="#f07ac0"/>
-      <path d="M3.5 24.5 Q8.5 22 13.5 24.5" stroke="#f07ac0" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <!-- bas-droite (bleu) -->
-      <circle cx="17.5" cy="17.5" r="3.2" fill="#6eb3f7"/>
-      <path d="M12.5 24.5 Q17.5 22 22.5 24.5" stroke="#6eb3f7" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="7"  cy="5.5" r="2.4" fill="#8ab4f8" opacity="0.9"/>
+      <path d="M2.5 11.5 Q7 9.5 11.5 11.5" stroke="#8ab4f8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
+      <circle cx="17" cy="5.5" r="2.4" fill="#c4a4e0" opacity="0.9"/>
+      <path d="M12.5 11.5 Q17 9.5 21.5 11.5" stroke="#c4a4e0" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
+      <circle cx="7"  cy="16.5" r="2.4" fill="#c4a4e0" opacity="0.9"/>
+      <path d="M2.5 22.5 Q7 20.5 11.5 22.5" stroke="#c4a4e0" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
+      <circle cx="17" cy="16.5" r="2.4" fill="#8ab4f8" opacity="0.9"/>
+      <path d="M12.5 22.5 Q17 20.5 21.5 22.5" stroke="#8ab4f8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
     </svg>
   </div>
-  <div>
+  <div class="header-titles">
     <h1>GroupClass</h1>
     <p>Répartiteur de groupes</p>
   </div>
-  <div id="authorTag" style="margin-left:auto;font-size:0.72rem;font-weight:600;color:var(--accent);"></div>
+  <div id="authorTag" style="font-size:0.72rem;font-weight:600;color:var(--accent);white-space:nowrap;"></div>
   <button id="helpBtn" style="
-    width:38px;height:38px;border-radius:50%;border:2px solid rgba(240,122,192,0.6);
-    background:rgba(240,122,192,0.1);color:#f07ac0;font-family:'Syne',sans-serif;
-    font-weight:800;font-size:1.1rem;cursor:pointer;flex-shrink:0;
+    width:34px;height:34px;border-radius:50%;border:1px solid rgba(211,47,47,0.4);
+    background:rgba(211,47,47,0.08);color:#ef5350;font-family:'Syne',sans-serif;
+    font-weight:800;font-size:1rem;cursor:pointer;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;margin-left:8px;
     transition:all 0.15s;
   ">?</button>
